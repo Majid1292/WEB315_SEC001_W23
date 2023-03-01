@@ -8,8 +8,8 @@ namespace RazorPagesMovie.Models
     {
         public int ID { get; set; }
 
-        [StringLength(30, MinimumLength = 3)]
-        [Required]
+        // [StringLength(30, MinimumLength = 3)]
+        // [Required]
         public string Title { get; set; }
 
         [Display(Name = "Release Date")]

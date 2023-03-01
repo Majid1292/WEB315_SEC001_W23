@@ -4,7 +4,7 @@
     ViewData["Title"] = "Home page";
     var Username = "Ali";
     var year = 2024;
-    var people = new string[] {"John","Mary","Sarah"};
+    var fruits = new string[] {"apple", "banana", "tomato", "peach" };
 }
 
 <div class="text-center">
@@ -14,23 +14,26 @@
     <h3> My username is : @Username <h3>
     <h4> The current time is: @DateTime.Now </h4>
     <p>@year is a leap year : @DateTime.IsLeapYear(@year)</p>
-    <p>Last week this time: @(DateTime.Now - TimeSpan.FromDays(14))</p>
+    <p>Last week this time: @(DateTime.Now - TimeSpan.FromDays(7))</p> 
 
-    
-    @*@{var i = 1;}
+<div>
+        @for (var i = 0; i < fruits.Length; i++)
+        {
+            <p>Fruit Name: @fruits[i]</p>
+        }
+</div>
+
+ @*@{var i = 1;}
     @foreach (var person in people)
     {
         <p>Name_@i: @person</p>
         i++;
         
     }*@
- @for (var i = 1; i <= people.Length; i++)
+ @* @for (var i = 1; i <= people.Length; i++)
     {
         var person = people[i-1];
         <p> Name_@(i): @person</p>
-    } 
-
-
-
+    }  *@
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
