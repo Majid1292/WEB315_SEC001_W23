@@ -1,0 +1,28 @@
+@page "/factorial"
+
+<h2>This is the factorial page</h2>
+
+<p> @number! is : @recFact(number)</p>
+
+
+@code{
+    private int number = 4;
+
+    private int fact(int num) {
+        var factValue = 1;
+        for (var i=1; i <= num; i++) {
+            factValue = factValue * i;
+        }
+        return factValue;
+    }
+
+    private int recFact(int num) {
+        if (num == 1) {
+            return 1;
+        }
+        else
+        {
+            return num * recFact(num-1);
+        }
+    }
+}
