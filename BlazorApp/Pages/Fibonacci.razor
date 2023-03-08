@@ -1,0 +1,23 @@
+@page "/fibonacci"
+
+<h2> In this page we calculate fibonacci series</h2>
+
+<p> fibo(@number) is : @fibo(number) </p>
+
+@code {
+
+    private int number  =7;
+
+    private int fibo (int num) {
+        var n1=0;
+        var n2=1;
+        var n3=1;
+        for(var i=1; i<num; i++) {
+            n3= n1+ n2;
+            n1=n2;
+            n2=n3;
+        }
+        return n3;
+
+    }
+}

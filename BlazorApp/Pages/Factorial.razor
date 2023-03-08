@@ -1,13 +1,27 @@
 @page "/factorial"
 
 <h2>This is the factorial page</h2>
+<p>4! means 4*3*2*1</p>
 
-<p> @number! is : @recFact(number)</p>
+<p> @number! is :(based on while loop) @fact_while(number)</p>
+<p> @number! is : (based on for loop) @fact(number)</p>
+<p> @number! is : (based on recursive method) @recFact(number)</p>
 
 
 @code{
-    private int number = 4;
+    private int number = 5;
 
+    private int fact_while(int num) {
+        var factValue = 1;
+        var i=1;
+        while (i <= num) {
+            factValue = factValue * i;
+            i++;
+        }
+        return factValue;
+    }
+    
+    
     private int fact(int num) {
         var factValue = 1;
         for (var i=1; i <= num; i++) {
