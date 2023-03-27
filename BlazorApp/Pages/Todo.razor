@@ -3,7 +3,6 @@
 <h3>Todo list (@todos.Count(todo => !todo.IsDone))</h3>
 
 
-
 <input placeholder="Somthing Todo" @bind="newTodo"/>
 <button @onclick="AddTodo">Add todo</button>
 <p>
@@ -14,7 +13,20 @@
     {
         <p>
             <input type="checkbox" @bind="todo.IsDone"/>
-            <input @bind="todo.Title"/>
+            @todo.Title
+            <button @onclick="(e) => AddSubItem(todo)">Add Sub Item</button>
+            <input placeholder="Sub Item" @bind="newSubItem"/>
+            <ul> 
+                @if (todo.SubItems !=null) 
+                {
+                    @foreach(var subitem in todo.SubItems)
+                    {
+                        <li>
+                            @subitem
+                        </li>
+                    }
+                }
+            </ul>
         </p>
     }
 </ul>
@@ -24,19 +36,34 @@
 @code {
 
     private List<TodoItem> todos= new();
-    private string newTodo;    
+    private string newTodo;
+    private string newSubItem;    
 
     private void AddTodo()
     {
         if (!string.IsNullOrWhiteSpace(newTodo))
-        todos.Add(new TodoItem { Title = newTodo});
-        newTodo=string.Empty;
+        {
+            todos.Add(new TodoItem { Title = newTodo});
+            newTodo=string.Empty;
+        }
     }    
+
+    private void AddSubItem(TodoItem currentTodo) 
+    {
+       if (currentTodo.SubItems == null) 
+       {
+            currentTodo.SubItems = new List<string>();
+       }
+       currentTodo.SubItems.Add(newSubItem); 
+
+    }
+
 
 
     public class TodoItem 
     {
         public string Title {get; set;}
         public bool IsDone {get; set;}
+        public List<string> SubItems {get; set;}
     }
 }
