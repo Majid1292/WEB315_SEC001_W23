@@ -1,12 +1,13 @@
 ﻿@page "/todo"
 
 <h3>Todo list (@todos.Count(todo => !todo.IsDone))</h3>
+@* <h6>Number of all subitems : @numOfSubItems</h6> *@
 
 
 <input placeholder="Somthing Todo" @bind="newTodo"/>
 <button @onclick="AddTodo">Add todo</button>
 <p>
-    
+<input placeholder="Sub Item" @bind="newSubItem"/>
 </p>
 <ul>
     @foreach (var todo in todos)
@@ -15,18 +16,23 @@
             <input type="checkbox" @bind="todo.IsDone"/>
             @todo.Title
             <button @onclick="(e) => AddSubItem(todo)">Add Sub Item</button>
-            <input placeholder="Sub Item" @bind="newSubItem"/>
-            <ul> 
-                @if (todo.SubItems !=null) 
-                {
+            @if (todo.SubItems !=null) 
+            {
+                <span> Number of sub items: @todo.SubItems.Count() </span>
+                @* @(numOfSubItems = todo.SubItems.Count() + numOfSubItems) *@
+                <ul> 
+                    
+                
                     @foreach(var subitem in todo.SubItems)
                     {
                         <li>
                             @subitem
                         </li>
                     }
-                }
-            </ul>
+                
+                </ul>
+            }
+            else {<span> Number of sub items: 0 </span>} 
         </p>
     }
 </ul>
@@ -37,7 +43,8 @@
 
     private List<TodoItem> todos= new();
     private string newTodo;
-    private string newSubItem;    
+    private string newSubItem;
+    private int numOfSubItems=0;    
 
     private void AddTodo()
     {
@@ -50,12 +57,15 @@
 
     private void AddSubItem(TodoItem currentTodo) 
     {
-       if (currentTodo.SubItems == null) 
+       if (!string.IsNullOrWhiteSpace(newSubItem)) 
        {
-            currentTodo.SubItems = new List<string>();
+            if (currentTodo.SubItems == null) 
+            {
+                    currentTodo.SubItems = new List<string>();
+            }
+            currentTodo.SubItems.Add(newSubItem);
+            newSubItem = ""; 
        }
-       currentTodo.SubItems.Add(newSubItem); 
-
     }
 
 
