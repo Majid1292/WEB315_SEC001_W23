@@ -3,6 +3,12 @@
 @inject NavigationManager NavigationManager
 @implements IAsyncDisposable
 
+@if (!string.IsNullOrEmpty(userPing))
+{
+    <h4>
+        @userPing
+    </h4>
+}
 <div class="form-group">
     <label>
         User:
@@ -15,6 +21,17 @@
         <input @bind="messageInput" size="50" />
     </label>
 </div>
+
+<div class="form-group">
+    <button @onclick="SendToMe" disabled="@(!IsConnected)">Send to only myself</button>
+</div>
+<div class="form-group">
+    <button @onclick="SendToOthers" disabled="@(!IsConnected)">Send to everyone except myself</button>
+</div>
+<div class="form-group">
+    <button @onclick="SendPing" disabled="@(!IsConnected)">Send ping</button>
+</div>
+
 <button @onclick="Send" disabled="@(!IsConnected)">Send</button>
 
 <hr>
@@ -31,6 +48,7 @@
     private List<string> messages = new List<string>();
     private string userInput;
     private string messageInput;
+    private string userPing;
 
     protected override async Task OnInitializedAsync()
     {
@@ -40,8 +58,15 @@
 
         hubConnection.On<string, string>("ReceiveMessage", (user, message) =>
         {
-            var encodedMsg = $"{user}: {message}";
+            var encodedMsg = $"{user} : {message}";
             messages.Add(encodedMsg);
+            StateHasChanged();
+        });
+
+         hubConnection.On<string>("PingUsers", (user) =>
+        {
+            var encodedMsg = $"{user} has pinged the chat";
+            userPing = encodedMsg;
             StateHasChanged();
         });
 
@@ -50,6 +75,15 @@
 
     async Task Send() =>
         await hubConnection.SendAsync("SendMessage", userInput, messageInput);
+
+    async Task SendToMe() =>
+    await hubConnection.SendAsync("SendMessageToCaller", userInput, messageInput);    
+
+     async Task SendToOthers() =>
+    await hubConnection.SendAsync("SendMessageToOthers", userInput, messageInput);
+
+    async Task SendPing() =>
+    await hubConnection.SendAsync("SendPingToOthers", userInput);
 
     public bool IsConnected =>
         hubConnection.State == HubConnectionState.Connected;

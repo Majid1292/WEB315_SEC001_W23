@@ -6,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Linq;
-using BlazorSignalRApp.Server.Hubs;
+using BlazorSignalRApp.Server.Hubs; // This is new
 
 namespace BlazorSignalRApp.Server
 {
@@ -26,8 +26,8 @@ namespace BlazorSignalRApp.Server
 
             services.AddControllersWithViews();
             services.AddRazorPages();
-            services.AddSignalR();
-            services.AddResponseCompression(opts =>
+            services.AddSignalR();// This is new
+            services.AddResponseCompression(opts => // This is new
             {
                 opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
                     new[] { "application/octet-stream" });
@@ -37,7 +37,7 @@ namespace BlazorSignalRApp.Server
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-             app.UseResponseCompression();
+             app.UseResponseCompression(); // This is new
 
             if (env.IsDevelopment())
             {
@@ -61,7 +61,7 @@ namespace BlazorSignalRApp.Server
             {
                 endpoints.MapRazorPages();
                 endpoints.MapControllers();
-                endpoints.MapHub<ChatHub>("/chathub");
+                endpoints.MapHub<ChatHub>("/chathub"); // This is new
                 endpoints.MapFallbackToFile("index.html");
             });
         }
